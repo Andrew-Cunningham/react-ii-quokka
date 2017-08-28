@@ -3,6 +3,40 @@
 // See: https://quokkajs.com/
 
 // What is "this" in Javascript? A way for functions to refer to the context in which they are run.
+// Why do we use this? It's a way to refer to self. For example, in the sentence "If I want to run
+// faster, I must eat right and train hard", what is the name of who is speaking? It doesn't matter!
+class Employee {
+  constructor(name) {
+    this.name = name;
+    this.position = "Green bean";
+    this.salary = "miniscule";
+  }
+
+  promote() {
+    // We COULD hard-code "joe" here. But then it'd only work for the joe variable.
+    joe.position = "Senior Dev";
+    joe.salary = this.salary + " and a healthy bump in pay";
+    // If we use 'this', it'll work for any variable.
+    this.position = "Senior Dev";
+    this.salary = this.salary + " and a healthy bump in pay";
+  }
+}
+
+var joe = new Employee('Joe');
+joe.promote();
+joe;
+
+// Check it out. If we use "this" above (in our Employee class), instead of joe, we can name
+// other variables anything we want.
+var tim = new Employee('Tim');
+tim.promote();
+tim;
+
+
+
+// Javascript's "this" is confusing. Yay Javascript! Don't write a letter to Brendan Eich, he's
+// already aware.
+
 
 // Every time you call a function in Javascript, you are actually calling a method on an object.
 // Quiz: what is a method?
@@ -86,9 +120,30 @@ function announceAccomplishmentOnTwitter(doAfterAnnouncing) {
 //   }
 // }
 // announceAccomplishmentOnTwitter(bind(hero, hero.congratulate));
+//
+// Note: the real bind allows arbitrary additional arguments that get forwarded to the function. Our
+// simple version does not.
 
-
-
+// Let's talk about another way to deal with this issue: arrow functions. Arrow functions have a key
+// difference from regular functions: they don't create a new scope for "this", therefore the "this"
+// stays with the current context where the arrow function is declared.
+var x = {
+  count: 0,
+  f: function() {
+    this.count = 10;
+    var a = function() {
+      this.count = 11;
+    }
+    a()
+    var b = () => {
+      this.count = 13;
+    }
+    b()
+  }
+}
+x.f()
+console.log('x.count', x.count);
+console.log('global.count', global.count);
 
 
 
